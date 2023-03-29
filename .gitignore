@@ -1,1 +1,21 @@
+#Ignore IDE
+## PHPStorm
+/.idea
 
+## Visual Studio Code
+.vscode
+
+## Sublime Text
+/.sublime-project
+/.sublime-workspace
+
+# Atom
+/.atom
+
+## NetBeans
+/nbproject
+/build
+
+## Eclipse
+/.project
+/.settings
