@@ -1,0 +1,13 @@
+#!/bin/sh
+
+BASE_PATH=$(dirname "$(dirname "$(realpath "$0")")");
+
+NC='\033[0m'
+LIGHT_CYAN='\033[1;36m'
+
+echo "### Setting git hooks";
+if [ -f "$BASE_PATH/.git/hooks/pre-commit" ]; then
+  echo "${LIGHT_CYAN}Skipped${NC}"
+else
+  cp "${BASE_PATH}/.prepare/templates/hooks/pre-commit" "${BASE_PATH}/.git/hooks/pre-commit"
+fi

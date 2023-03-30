@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Run PHP Code Sniffer on each file added to the commit
+git diff --cached --name-only --diff-filter=ACM | grep \\\\.php\$ | xargs -I {} sh -c 'docker exec app vendor/bin/phpcs --standard=PSR2 {}'
+
+# If PHP Code Sniffer errors are found, exit with a non-zero status
+if [ $? -ne 0 ]; then
+    echo "PHP Code Sniffer errors found. Aborting commit."
+    exit 1
+fi
