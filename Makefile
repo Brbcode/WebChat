@@ -1,7 +1,7 @@
 # Define the command prefix variable
 DOCKER_COMPOSE_CMD = do-co -f .docker/docker-compose.yml
 
-dev-env: prepare-dev-env composer-install
+dev-env: prepare-dev-env composer-install db
 
 prepare-dev-env:
 	$(DOCKER_COMPOSE_CMD) exec app "./.prepare/dev-env"
@@ -20,6 +20,9 @@ rebuild:
 bash:
 	$(DOCKER_COMPOSE_CMD) exec app bash
 
+bash-sqlserver:
+	$(DOCKER_COMPOSE_CMD) exec sqlserver bash
+
 composer-install:
 	@echo ""
 	@echo "### Composer Install"
@@ -30,6 +33,19 @@ php-lint:
 
 php-lint-fix:
 	$(DOCKER_COMPOSE_CMD) exec app vendor/bin/phpcbf --standard=PSR2 --colors  $(word 2,$(MAKECMDGOALS))
+
+db:
+	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:database:drop --if-exists --force"
+	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:database:create"
+	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:migrations:migrate -n"
+
+db-test:
+	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:database:drop --if-exists --force --env=test"
+	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:database:create --env=test"
+	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:migrations:migrate -n --env=test"
+
+query-console:
+	$(DOCKER_COMPOSE_CMD) exec sqlserver mysql -u $(SQL_USER) -p
 
 version:
 	@echo -n "\033[32mPHP\033[0m version \033[33m"
