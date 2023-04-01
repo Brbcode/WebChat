@@ -38,11 +38,13 @@ db:
 	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:database:drop --if-exists --force"
 	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:database:create"
 	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:migrations:migrate -n"
+	$(DOCKER_COMPOSE_CMD) exec app "php bin/console hau:fix:load -n"
 
 db-test:
 	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:database:drop --if-exists --force --env=test"
 	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:database:create --env=test"
 	$(DOCKER_COMPOSE_CMD) exec app "php bin/console doctrine:migrations:migrate -n --env=test"
+	$(DOCKER_COMPOSE_CMD) exec app "php bin/console hau:fix:load -n --env=test"
 
 query-console:
 	$(DOCKER_COMPOSE_CMD) exec sqlserver mysql -u $(SQL_USER) -p
