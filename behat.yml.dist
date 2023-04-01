@@ -1,0 +1,42 @@
+default:
+    suites:
+        default:
+            contexts:
+                - App\Tests\Behat\DemoContext
+                - Behat\MinkExtension\Context\MinkContext
+                - behatch:context:browser
+                - behatch:context:json
+                - behatch:context:system
+                - behatch:context:rest
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: tests/bootstrap.php
+        Behatch\Extension: ~
+        Behat\MinkExtension:
+            files_path: "%paths.base%/src/Behat/Resources/fixtures/"
+            base_url: "http://127.0.0.1:8001/"
+            default_session: symfony
+            javascript_session: chrome
+            sessions:
+                symfony:
+                    symfony: ~
+                chrome:
+                    selenium2:
+                        wd_host: "http://selenium:4444/wd/hub"
+                        browser: chrome
+                        capabilities:
+                            browserName: chrome
+                            browser: chrome
+                            version: ""
+                            marionette: null
+                            chrome:
+                                switches:
+                                    - "start-fullscreen"
+                                    - "start-maximized"
+                                    - "no-sandbox"
+                            extra_capabilities:
+                                unexpectedAlertBehaviour: accept
+                                goog:chromeOptions:
+                                    w3c: false
+            show_auto: false

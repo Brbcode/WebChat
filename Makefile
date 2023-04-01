@@ -49,6 +49,11 @@ db-test:
 query-console:
 	$(DOCKER_COMPOSE_CMD) exec sqlserver mysql -u $(SQL_USER) -p
 
+behat:
+	$(DOCKER_COMPOSE_CMD) exec app php vendor/bin/behat
+
+behat-full: db-test behat
+
 version:
 	@echo -n "\033[32mPHP\033[0m version \033[33m"
 	@echo -n "$(shell $(DOCKER_COMPOSE_CMD) exec app php -v | awk '/^PHP/ {print substr($$2, 1, 3)}')"
