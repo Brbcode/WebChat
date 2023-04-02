@@ -25,6 +25,17 @@ services:
       - db:/var/lib/mysql
       - ../.prepare/templates/sqlserver/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  nginx:
+    image: nginx:latest
+    container_name: webserver
+    depends_on:
+      - app
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./public:/var/www/html/public
+
 volumes:
 ###> doctrine/doctrine-bundle ###
   db:
